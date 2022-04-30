@@ -1,0 +1,33 @@
+﻿@model RamenCo.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kategori Ekle</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Kategori Adı
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-outline-success " />
+                <a asp-action="Index" class="btn btn-outline-dark" style="margin-left:140px">
+                    <i class="bi bi-backspace-reverse"></i> Kategori Listesi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

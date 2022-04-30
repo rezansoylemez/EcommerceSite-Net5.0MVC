@@ -1,0 +1,26 @@
+﻿@model RamenCo.Models.Category
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kategori Sil</h2>
+<h3>Kategoriyi silmek istediğinizden emin misiniz?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Kategori Adı
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Sil" class="btn btn-outline-danger" /> 
+        <a asp-action="Index" class="btn btn-outline-dark" style="margin-left:100px"><i class="bi bi-backspace-reverse"></i>Kayıt Listesi</a>
+    </form>
+</div>
