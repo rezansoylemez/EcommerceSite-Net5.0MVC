@@ -9,9 +9,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        
+
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" style="background-color: #f0efeb ">
         <h4>Ürün Ekleme</h4>
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -50,17 +50,17 @@
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-outline-success" />
-                <a asp-action="Index" class="btn btn-outline-dark" style="margin-left:160px">
+                <a asp-action="Index" class="btn btn-outline-dark" style="margin-right:160px">
                     <i class="bi bi-backspace-reverse"></i> Ürün Listesi
                 </a>
+                <input type="submit" value="Ekle" class="btn btn-outline-success" />
+
             </div>
         </form>
     </div>
+    
 </div>
 
-<div>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

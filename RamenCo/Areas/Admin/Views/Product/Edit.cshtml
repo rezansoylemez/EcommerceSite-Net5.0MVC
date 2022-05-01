@@ -5,60 +5,73 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+
+    </div>
+    <div class="col-md-4" style="background-color: #f0efeb">
+        <h4>Ürün Düzenleme Ekleme</h4>
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                Başlık
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                Açıklama
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                Ürün Fiyatı
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+                Ürün Görseli
+                <input asp-for="Image" class="form-control" type="hidden" />
+                <input asp-for="Image" class="form-control" type="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsHome" /> @Html.DisplayNameFor(model => model.IsHome)
+                    <input class="form-check-input" asp-for="IsHome" />Ana Sayfa Paylaşımı
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsStock" /> @Html.DisplayNameFor(model => model.IsStock)
+                    <input class="form-check-input" asp-for="IsStock" />Stok Durumu
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryID" class="control-label"></label>
+                Kategori
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="CategoryID" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-dark" style="margin-right:130px">
+                    <i class="bi bi-backspace-reverse"></i> Ürün Listesi
+                </a>
+                <input type="submit" value="Kaydet" class="btn btn-outline-success" />
+
             </div>
         </form>
     </div>
+    <div class="col-md-4" >
+        
+        @if (Model.Image == null)
+        {
+            <img src="~/images/image/GörselHazırlanıyor.png" width="200" height="180" />
+        }
+        else
+        {
+            <img src="@Model.Image" width="200" height="180" />
+        }
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

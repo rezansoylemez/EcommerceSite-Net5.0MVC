@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,13 @@ namespace RamenCo.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+        //Projenin Aşama sürecine göre farklılıkları geliştirme/test/yayınlama gibi yapıları ayıran method
+        private readonly IWebHostEnvironment _he;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context, IWebHostEnvironment he)
         {
             _context = context;
+            _he = he;
         }
 
         // GET: Admin/Product
@@ -58,15 +63,36 @@ namespace RamenCo.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,Price,Image,IsHome,IsStock,CategoryID,ID")] Product product)
+        public async Task<IActionResult> Create( Product product)
         {
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
+                {
+                    //Görsel ekleme senaryosunda çalışacak
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(_he.WebRootPath, @"images\product");
+                    var ext = Path.GetExtension(files[0].FileName);
+                    if (product.Image != null)
+                    {
+                        var imagePath = Path.Combine(_he.WebRootPath, product.Image.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + ext), FileMode.Create))
+                    {
+                        files[0].CopyTo(filesStreams);
+                    }
+                    product.Image = @"\images\product\" + fileName + ext;
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", product.CategoryID);
+
             return View(product);
         }
 
@@ -92,34 +118,36 @@ namespace RamenCo.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Price,Image,IsHome,IsStock,CategoryID,ID")] Product product)
+        public async Task<IActionResult> Edit(Product product)
         {
-            if (id != product.ID)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.ID))
+                    //Görsel ekleme senaryosunda çalışacak
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(_he.WebRootPath, @"images\product");
+                    var ext = Path.GetExtension(files[0].FileName);
+                    if (product.Image != null)
                     {
-                        return NotFound();
+                        var imagePath = Path.Combine(_he.WebRootPath, product.Image.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
                     }
-                    else
+                    using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + ext), FileMode.Create))
                     {
-                        throw;
+                        files[0].CopyTo(filesStreams);
                     }
+                    product.Image = @"\images\product\" + fileName + ext;
                 }
+                _context.Update(product);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", product.CategoryID);
             return View(product);
         }
 
@@ -148,6 +176,12 @@ namespace RamenCo.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
+            //Silinen ürünlerin product klasöründen silmesi için
+            var imagePath = Path.Combine(_he.WebRootPath, product.Image.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

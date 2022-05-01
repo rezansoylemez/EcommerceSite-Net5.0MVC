@@ -10,15 +10,15 @@
 
     <table class="table table-striped table-bordered" id="myTable">
         <thead>
-            <tr style="background-color: #f2cc8f ">
+            <tr style="background-color:cadetblue ">
                 <th>
-                    Ürün Resimi
+                    Ürün Resim
                 </th>
                 <th>
                     Başlık
                 </th>
                 <th>
-                    Ana Sayfa Listeleme Durumu
+                    Ürün Yayın Durumu
                 </th>
                 <th>
                     Stok Durumu
@@ -40,7 +40,7 @@
                         }
                         else
                         {
-                            <img src="item.Image" width="100" height="80" />
+                            <img src="@item.Image" width="100" height="90" />
                         }
                     </td>
                     <td>
@@ -49,21 +49,21 @@
                     <td>
                         @if (item.IsHome)
                         {
-                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Evet</label>
+                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Yayında</label>
                         }
                         else
                         {
-                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Hayır</label>
+                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Yayında Değil</label>
                         }
                     </td>
                     <td>
                         @if (item.IsStock)
                         {
-                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Evet</label>
+                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
                         }
                         else
                         {
-                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Hayır</label>
+                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
                         }
                     </td>
                     <td>
@@ -79,7 +79,7 @@
     </table>
     <br />
     <p>
-        <a asp-action="Create" class="btn btn-outline-primary form-control">Ürün Ekle</a>
+        <a asp-action="Create" class="btn btn-outline-primary form-control"><i class="bi bi-plus-square"></i> Ürün Ekle</a>
     </p>
 </div>
 
