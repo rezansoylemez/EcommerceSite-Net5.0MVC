@@ -39,6 +39,18 @@ namespace RamenCo
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            //Kullanýcý giriþi olmayan giriþleri login sayfasýna yönlendirmek için.
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "819635146598-4vd9u0uh5aabu85n1shfh7a5aneih91u.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +83,7 @@ namespace RamenCo
                     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
         }
     }
 }

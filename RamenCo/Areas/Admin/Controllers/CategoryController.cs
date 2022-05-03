@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,10 @@ using RamenCo.Models;
 namespace RamenCo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //Giriş yapmadan bu sayfalara erişme engeli(ancak normal giriş yapsa dahi erişebilir (Roles=admin verilirse sadece admin erişebilir))
+
+    [Authorize(Roles = AddRole.RoleAdmin)]
+
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
