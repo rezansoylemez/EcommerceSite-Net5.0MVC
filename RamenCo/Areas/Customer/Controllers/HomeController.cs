@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RamenCo.Data;
 using RamenCo.Models;
@@ -6,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RamenCo.Areas.Customer.Controllers
@@ -36,6 +39,49 @@ namespace RamenCo.Areas.Customer.Controllers
                 Product=product,
                 ProductID=product.ID,
             };
+            return View(shoppingCart);
+        }
+        //Urunlerin sepete eklenmesi
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //Kullanıcı girişi yapılmadan septe eklenmemesi için
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            shoppingCart.ID = 0;
+            if (ModelState.IsValid)
+            {
+                var claimIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                shoppingCart.LoginUserID = claim.Value;
+                //kart boş ise db e sepete ekliyorum
+                ShoppingCart cart = _db.ShoppingCarts.FirstOrDefault(a=>a.LoginUserID==shoppingCart.LoginUserID && a.ProductID==shoppingCart.ProductID);
+                if (cart==null)
+                {
+                    _db.ShoppingCarts.Add(shoppingCart);
+                }
+                else
+                {
+                    //sepette herhangi bir urun varsa yeni bir sepet açmak yerine o sepete ekleme yapmak için
+                    cart.Count += shoppingCart.Count;
+                }
+                _db.SaveChanges();
+                //Sipariş verenlerin syısnı getirmek için
+                var count = _db.ShoppingCarts.Where(a => a.LoginUserID == shoppingCart.LoginUserID).ToList().Count();
+                HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, count);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var product = _db.Products.FirstOrDefault(a => a.ID ==shoppingCart.ID);
+                ShoppingCart cart = new ShoppingCart()
+                {
+                    Product = product,
+                    ProductID = product.ID,
+                };
+            }
+          
             return View(shoppingCart);
         }
 

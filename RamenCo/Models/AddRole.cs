@@ -11,5 +11,6 @@ namespace RamenCo.Models
         public const string RoleGoogle = "Google";
         public const string RoleAdmin = "Admin";
         public const string RoleUser = "User";
+        public const string SassionShoppingCart = "Shopping Cart Session";
     }
 }

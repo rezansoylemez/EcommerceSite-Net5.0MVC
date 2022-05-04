@@ -51,6 +51,14 @@ namespace RamenCo
                 options.ClientId = "819635146598-4vd9u0uh5aabu85n1shfh7a5aneih91u.apps.googleusercontent.com";
                 options.ClientSecret = "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";
             });
+            services.AddDistributedMemoryCache();
+            //10 dakika sonra oturumu kapatmak için
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +79,8 @@ namespace RamenCo
             app.UseStaticFiles();
 
             app.UseRouting();
+            //Session Kullanmak için
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
