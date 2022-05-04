@@ -1,0 +1,71 @@
+﻿@model RamenCo.Models.ShoppingCart
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <br />
+    <div class="row">
+        <form method="post">
+            <input hidden asp-for="ProductID" />
+            <div class="card mb-12" >
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="@Model.Product.Image" class="img-fluid rounded-start" alt="..." style="height:350px">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-3">
+                                    Marka:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    @Model.Product.Title
+                                </dd>
+
+                                <dt class="col-sm-3">
+                                    Fiyat:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <b>@Model.Product.Price.ToString("0.00") TL</b>
+                                </dd>
+                                <dt class="col-sm-3">
+                                    Stok Durumu:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    @if (Model.Product.IsStock)
+                                    {
+                                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
+                                    }
+                                </dd>
+                                <dt class="col-sm-3">
+                                    Adet:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <input asp-for="Count" class="form-control" style="width:75px" min="0" max="10" />
+                                </dd>
+                                <dt class="col-sm-3">
+                                    RamenCo Mesajı:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    Bu ürün <b>Ramen<a style="color:orange">Co</a></b> tarafından yalnızca 10 adet ile sınırlandırılmıştır.
+                                </dd>
+                                <hr style="width:680px"/>
+                                <p class="card-text">Ürün Özellikleri:</p>
+                                <p class="card-text">@Model.Product.Description<small class="text-muted">Last updated 3 mins ago</small></p>
+                            </dl>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -27,6 +27,17 @@ namespace RamenCo.Areas.Customer.Controllers
             var products = _db.Products.Where(a => a.IsHome).ToList();
             return View(products);
         }
+        //Urun detayi tıklandıgında diğer sayfaya ıd göndermek
+        public IActionResult Details(int id)
+        {
+            var product = _db.Products.FirstOrDefault(a => a.ID == id);
+            ShoppingCart shoppingCart = new ShoppingCart()
+            {
+                Product=product,
+                ProductID=product.ID,
+            };
+            return View(shoppingCart);
+        }
 
         public IActionResult Privacy()
         {
