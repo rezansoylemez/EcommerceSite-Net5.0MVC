@@ -24,56 +24,84 @@
                     Stok Durumu
                 </th>
                 <th>
+                    Kargo Durumu
+                </th>
+                <th>
+                    Hemen Kargo
+                </th>
+                <th>
                     Kategori
                 </th>
-                <th></th>
+                <th>
+                    
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @if (item.Image == null)
-                        {
-                            <img src="~/images/image/GörselHazırlanıyor.png" width="110" height="90" />
-                        }
-                        else
-                        {
-                            <img src="@item.Image" width="100" height="90" />
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @if (item.IsHome)
-                        {
-                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Yayında</label>
-                        }
-                        else
-                        {
-                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Yayında Değil</label>
-                        }
-                    </td>
-                    <td>
-                        @if (item.IsStock)
-                        {
-                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
-                        }
-                        else
-                        {
-                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Düzenle</a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> Sil</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @if (item.Image == null)
+                    {
+                        <img src="~/images/image/GörselHazırlanıyor.png" width="110" height="90" />
+                    }
+                    else
+                    {
+                        <img src="@item.Image" width="100" height="90" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @if (item.IsHome)
+                    {
+                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Yayında</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Yayında Değil</label>
+                    }
+                </td>
+                <td>
+                    @if (item.IsStock)
+                    {
+                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
+                    }
+                </td>
+                <td>
+                    @if (item.IsFreeShipping)
+                    {
+                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
+                    }
+                </td>
+                <td>
+                    @if (item.IsImmediateDelivery)
+                    {
+                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Hemen</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> 48 Saat</label>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Düzenle</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> Sil</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

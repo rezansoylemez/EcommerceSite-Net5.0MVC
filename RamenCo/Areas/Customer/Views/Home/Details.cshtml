@@ -37,11 +37,37 @@
                                 <dd class="col-sm-9">
                                     @if (Model.Product.IsStock)
                                     {
-                                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
+                                        <label class="btn-success btn-sm"><i class="bi bi-bag-check"></i> Stokta Var</label>
                                     }
                                     else
                                     {
-                                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
+                                        <label class="btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
+                                    }
+                                </dd>
+                                <dt class="col-sm-3">
+                                    Kargo :
+                                </dt>
+                                <dd class="col-sm-9">
+                                    @if (Model.Product.IsFreeShipping)
+                                    {
+                                        <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Ücretsiz Kargo</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli Kargo</label>
+                                    }
+                                </dd>
+                                <dt class="col-sm-3">
+                                    Hemen Kargo :
+                                </dt>
+                                <dd class="col-sm-9">
+                                    @if (Model.Product.IsImmediateDelivery)
+                                    {
+                                        <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargo</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="btn-danger btn-sm"><i class="bi bi-bag-x"></i> 48 Saat</label>
                                     }
                                 </dd>
                                 <dt class="col-sm-3">
@@ -56,9 +82,9 @@
                                 <dd class="col-sm-9">
                                     Bu ürün <b>Ramen<a style="color:orange">Co</a></b> tarafından yalnızca 10 adet ile sınırlandırılmıştır.
                                 </dd>
-                                <hr style="width:680px"/>
+                                <hr style="width:680px" />
                                 <p class="card-text">Ürün Özellikleri:</p>
-                                <p class="card-text">@Model.Product.Description<small class="text-muted">Last updated 3 mins ago</small></p>
+                                <p class="card-text">@Model.Product.Description<small class="text-muted"></small> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,  </p>
                             </dl>
                             
                         </div>

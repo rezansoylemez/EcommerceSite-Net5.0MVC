@@ -18,6 +18,8 @@ namespace RamenCo.Models
         public string Image { get; set; }
         public bool IsHome { get; set; }
         public bool IsStock { get; set; }
+        public bool IsFreeShipping { get; set; }
+        public bool IsImmediateDelivery{ get; set; }
         public int CategoryID { get; set; }
         [ForeignKey("CategoryID")]
         public Category Category { get; set; }

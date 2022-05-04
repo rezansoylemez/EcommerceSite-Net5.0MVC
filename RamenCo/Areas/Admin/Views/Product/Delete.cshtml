@@ -56,6 +56,32 @@
             }
         </dd>
         <dt class="col-sm-2">
+            Ücretsiz kargo :
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsFreeShipping)
+            {
+                <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i>Ücretsiz</label>
+            }
+            else
+            {
+                <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i>Ücretli</label>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Hemen kargo :
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsImmediateDelivery)
+            {
+                <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i>Hemen</label>
+            }
+            else
+            {
+                <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i>48 Saat</label>
+            }
+        </dd>
+        <dt class="col-sm-2">
             Kategori :
         </dt>
         <dd class="col-sm-10">
