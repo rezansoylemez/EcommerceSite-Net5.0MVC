@@ -18,9 +18,11 @@ namespace RamenCo.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _db;
+        Product product;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
         {
+            product = new Product();
             _db = db;
             _logger = logger;
         }
@@ -57,7 +59,7 @@ namespace RamenCo.Areas.Customer.Controllers
         public IActionResult Details(ShoppingCart shoppingCart)
         {
             shoppingCart.ID = 0;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid )
             {
                 var claimIdentity = (ClaimsIdentity)User.Identity;
                 var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);

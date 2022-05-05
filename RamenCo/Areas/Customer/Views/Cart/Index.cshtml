@@ -62,9 +62,9 @@
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="btn-group me-2" role="group" aria-label="First group">
                                             <input type="text" style="max-width:45px;" class="form-control" value="@item.Count" />
-                                            <button asp-action="Decrease" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-dash-lg"></i></button>
-                                            <button asp-action="Add" asp-route-cartId="@item.ID" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
-                                            <button asp-action="Remove" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                            <button asp-action="BasketDecrease" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-dash-lg"></i></button>
+                                            <button asp-action="BasketAdd" asp-route-cartId="@item.ID" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
+                                            <button asp-action="BasketRemove" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-trash"></i></button>
 
                                         </div>
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RamenCo.Data;
@@ -42,6 +43,49 @@ namespace RamenCo.Areas.Customer.Controllers
                 ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
             }
             return View(ShoppingCartViewModel);
+        }
+        public IActionResult Success()
+        {
+            return View();
+        }
+        //Sepetteki ürünleri artırmak için.
+        public IActionResult BasketAdd(int cartID)
+        {
+            var cart = _db.ShoppingCarts.FirstOrDefault(a => a.ID == cartID);
+            cart.Count += 1;
+            _db.SaveChanges();
+            //Artma işlemi yapıldıktan sonra aynı sayfa kalsın.
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult BasketDecrease(int cartID)
+        {
+            var cart = _db.ShoppingCarts.FirstOrDefault(a => a.ID == cartID);
+            if (cart.Count==1)
+            {
+                var count = _db.ShoppingCarts.Where(a => a.LoginUserID == cart.LoginUserID).ToList().Count();
+                _db.ShoppingCarts.Remove(cart);
+                _db.SaveChanges();
+                HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, count - 1);
+            }
+            else
+            {
+                cart.Count -= 1;
+                _db.SaveChanges();
+            }
+            //Artma işlemi yapıldıktan sonra aynı sayfa kalsın.
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult BasketRemove(int cartID)
+        {
+            var cart = _db.ShoppingCarts.FirstOrDefault(a => a.ID == cartID);
+
+            var count = _db.ShoppingCarts.Where(a => a.LoginUserID == cart.LoginUserID).ToList().Count();
+            _db.ShoppingCarts.Remove(cart);
+            _db.SaveChanges();
+            HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, count - 1);
+
+            //Artma işlemi yapıldıktan sonra aynı sayfa kalsın.
+            return RedirectToAction(nameof(Index));
         }
     }
 }

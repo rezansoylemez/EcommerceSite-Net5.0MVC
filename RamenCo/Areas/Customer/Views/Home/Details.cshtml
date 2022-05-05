@@ -22,14 +22,7 @@
                                     Marka:
                                 </dt>
                                 <dd class="col-sm-9">
-                                    @Model.Product.Title
-                                </dd>
-
-                                <dt class="col-sm-3">
-                                    Fiyat:
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <b>@Model.Product.Price.ToString("0.00") TL</b>
+                                    <b>  @Model.Product.Title</b>
                                 </dd>
                                 <dt class="col-sm-3">
                                     Stok Durumu:
@@ -76,6 +69,30 @@
                                 <dd class="col-sm-9">
                                     <input asp-for="Count" class="form-control" style="width:75px" min="0" max="10" />
                                 </dd>
+                                <dt class="col-sm-3">
+                                    Puan:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <div class="ratings">
+                                        <div class="stars">
+                                            <i class="fa fa-star" style="color:gold"></i>
+                                            <i class="fa fa-star" style="color:gold"></i>
+                                            <i class="fa fa-star" style="color:gold"></i>
+                                            <i class="fa fa-star" style="color:gold"></i>
+                                            <i class="fa fa-star" style="color:gray"></i>
+                                            @*<i class="bi bi-star-half" style="color:gold"></i>*@
+                                            <i>(16)</i>
+                                        </div>
+                                        <span class="product-rating">4.3</span>
+                                        <span>/5</span>
+                                    </div>
+                                </dd>
+                                <dt class="col-sm-3">
+                                    Fiyat:
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <b>@Model.Product.Price.ToString("0.00") TL</b>
+                                </dd>
 
                                 <dt class="col-sm-3">
                                     RamenCo Mesajı:
@@ -110,7 +127,7 @@
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-light form-control">
+                        <button type="submit" class="btn btn-light form-control" disabled>
                             <i class="bi bi-bag-check"></i> <b>
                                 Ürün Tükendi
                             </b>
