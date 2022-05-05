@@ -14,6 +14,8 @@ namespace RamenCo.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        public double ProductShipPrice { get; set; }
+        public double DiscountPercent { get; set; } = 0;
         public double Price { get; set; }
         public string Image { get; set; }
         public bool IsHome { get; set; }

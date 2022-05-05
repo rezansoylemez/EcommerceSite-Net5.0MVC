@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@* Admin Ürün listesi Index *@
 <div class="container">
 
 
@@ -55,14 +55,8 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @if (item.IsHome)
-                    {
-                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Yayında</label>
-                    }
-                    else
-                    {
-                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Yayında Değil</label>
-                    }
+                    Yana Kaydırdım
+                    (Buraya indirim oranı kargo fiyatları grlebilir.)
                 </td>
                 <td>
                     @if (item.IsStock)
@@ -72,6 +66,14 @@
                     else
                     {
                         <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Stokta Yok</label>
+                    }
+                    @if (item.IsHome)
+                    {
+                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Yayında</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Yayında Değil</label>
                     }
                 </td>
                 <td>

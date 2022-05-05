@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@* Ürün Detayı Index *@
 <div class="container">
     <br />
     <div class="row">
@@ -91,7 +91,17 @@
                                     Fiyat:
                                 </dt>
                                 <dd class="col-sm-9">
-                                    <b>@Model.Product.Price.ToString("0.00") TL</b>
+                                    @if (Model.Product.DiscountPercent > 0)
+                                    {
+                                        <del style="color:grey;"> @(Model.Product.Price.ToString("0.00")) </del>
+                                        double total = (((Model.Product.Price) * Model.Product.DiscountPercent) / 100);
+                                        <label style="color:red"><b> @((Model.Product.Price- total).ToString("0.00")) ₺</b></label>
+                                    }
+                                    else
+                                    {
+                                        <label style="color:red"><b> @(Model.Product.Price.ToString("0.00")) ₺</b></label>
+                                    }
+                                    
                                 </dd>
 
                                 <dt class="col-sm-3">

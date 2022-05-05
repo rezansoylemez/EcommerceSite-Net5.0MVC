@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@* Create Product *@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -27,13 +27,23 @@
             </div>
             <div class="form-group">
                 Ürün Fiyatı
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" placeholder="₺" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 Ürün Görseli
                 <input asp-for="Image" class="form-control" type="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Ürün Kargo Fiyatı
+                <input asp-for="ProductShipPrice" class="form-control" placeholder="₺" />
+                <span asp-validation-for="ProductShipPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Ürün İndirimi(Eğer Yoksa Boş Bırakınız)
+                <input asp-for="DiscountPercent" class="form-control" placeholder="%" />
+                <span asp-validation-for="DiscountPercent" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

@@ -36,6 +36,16 @@
                 <input asp-for="Image" class="form-control" type="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                Ürün İndirimi
+                <input asp-for="DiscountPercent" class="form-control" placeholder="%"/>
+                <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Kargo Ücreti
+                <input asp-for="ProductShipPrice" class="form-control" placeholder="Tl" />
+                <span asp-validation-for="ProductShipPrice" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsHome" />Ana Sayfa Paylaşımı

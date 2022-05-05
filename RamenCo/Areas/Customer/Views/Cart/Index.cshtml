@@ -1,10 +1,11 @@
 ﻿@model RamenCo.Models.ShoppingCartViewModel
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@*//Sepet Index*@
 <form method="post">
     @if (Model.ListCart.Count() > 0)
     {
@@ -33,50 +34,48 @@
                                 <th>
                                     Toplam Tutar
                                 </th>
-
-
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.ListCart)
                             {
-                            <tr>
-                                <td>
-                                    <img src="@item.Product.Image" width="60" />
-                                </td>
-                                <td>
-                                    <b> @item.Product.Title </b>
-                                </td>
-                                <td>
-                                    
-                                    @if (item.Product.IsFreeShipping)
-                                    {
-                                        <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
-                                    }
-                                    else
-                                    {
-                                        <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
-                                    }
-                                </td>
-                                <td>
-                                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                        <div class="btn-group me-2" role="group" aria-label="First group">
-                                            <input type="text" style="max-width:45px;" class="form-control" value="@item.Count" />
-                                            <button asp-action="BasketDecrease" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-dash-lg"></i></button>
-                                            <button asp-action="BasketAdd" asp-route-cartId="@item.ID" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
-                                            <button asp-action="BasketRemove" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                <tr>
+                                    <td>
+                                        <img src="@item.Product.Image" width="60" />
+                                    </td>
+                                    <td>
+                                        <b> @item.Product.Title </b>
+                                    </td>
+                                    <td>
+
+                                        @if (item.Product.IsFreeShipping)
+                                        {
+                                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                                <input type="text" style="max-width:45px;" class="form-control" value="@item.Count" />
+                                                <button asp-action="BasketDecrease" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-dash-lg"></i></button>
+                                                <button asp-action="BasketAdd" asp-route-cartId="@item.ID" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
+                                                <button asp-action="BasketRemove" asp-route-cartId="@item.ID" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+
+                                            </div>
 
                                         </div>
-
-                                    </div>
-                                </td>
-                                <td>
-                                    @item.Product.Price.ToString("0.00") ₺
-                                </td>
-                                <td>
-                                    @((item.Count*item.Product.Price).ToString("0.00")) ₺
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        @item.Product.Price.ToString("0.00") ₺
+                                    </td>
+                                    <td>
+                                        @((item.Count*item.Product.Price).ToString("0.00")) ₺
+                                    </td>
+                                </tr>
                             }
                             <tr>
                                 <td colspan="5" style="text-align:right">
@@ -86,6 +85,24 @@
                                     <span style="font-size:large;color:white">@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</span>
                                 </td>
                             </tr>
+                            @*<tr>
+                                <td colspan="5" style="text-align:right">
+                                    <strong>Kargo Ücreti:</strong>
+                                </td>
+                                <td style="background-color:forestgreen">
+                                    <span style="font-size:large;color:white">@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</span>
+                                    <span>
+                                        @if (Model.)
+                                        {
+                                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
+                                        }
+                                    </span>
+                                </td>
+                            </tr>*@
                         </tbody>
                     </table>
                     <div class="row">

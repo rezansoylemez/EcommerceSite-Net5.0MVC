@@ -17,6 +17,7 @@ namespace RamenCo.Areas.Customer.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
+        
 
         [BindProperty]
         public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
@@ -24,9 +25,10 @@ namespace RamenCo.Areas.Customer.Controllers
         {
             _db = db;
             _userManager = userManager;
+            
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
             var claimIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -38,9 +40,40 @@ namespace RamenCo.Areas.Customer.Controllers
             };
             ShoppingCartViewModel.OrderHeader.OrderTotal = 0;
             ShoppingCartViewModel.OrderHeader.LoginUser = _db.LoginUsers.FirstOrDefault(a => a.Id == claim.Value);
+
+            double discount = _db.Products.Where(a => a.ID==id).Select(a => a.DiscountPercent).FirstOrDefault();
             foreach (var item in ShoppingCartViewModel.ListCart)
             {
-                ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
+                if (item.Product.DiscountPercent>0)
+                {
+                    if (item.Product.IsFreeShipping)
+                    {
+                        double total = (((item.Product.Price) * item.Product.DiscountPercent) / 100);
+                        double totalDiscount = item.Count * total;
+                        double withOutDiscount = (item.Count * item.Product.Price);
+                        ShoppingCartViewModel.OrderHeader.OrderTotal += withOutDiscount - totalDiscount;
+                    }
+                    else
+                    {
+                        double total = (((item.Product.Price) * item.Product.DiscountPercent) / 100);
+                        double totalDiscount = item.Count * total;
+                        double withOutDiscount = (item.Count * item.Product.Price);
+                        ShoppingCartViewModel.OrderHeader.OrderTotal += withOutDiscount - totalDiscount +item.Product.ProductShipPrice;
+                    }
+                }
+                else
+                {
+                    if (item.Product.IsFreeShipping)
+                    {
+                        ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
+                    }
+                    else
+                    {
+                        ShoppingCartViewModel.OrderHeader.OrderTotal += ((item.Count * item.Product.Price) + (19));
+                    }
+                }
+                
+                
             }
             return View(ShoppingCartViewModel);
         }

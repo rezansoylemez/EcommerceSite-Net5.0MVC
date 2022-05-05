@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@* Cart and Categories *@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -21,15 +21,15 @@
         </div>
         @foreach (var item in Model)
         {
-            <div class="col-md-3">
+            <div class="col-md-3" >
                 <div class="card" style="width:260px">
                     <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
 
                     <div class="card-body">
                         <h5 class="card-title"><b>@item.Title</b></h5>
                         <p class="card-text"> @item.Description</p>
-                        <div class="ratings" >
-                            <div class="stars" >
+                        <div class="ratings">
+                            <div class="stars">
                                 <i class="fa fa-star" style="color:gold"></i>
                                 <i class="fa fa-star" style="color:gold"></i>
                                 <i class="fa fa-star" style="color:gold"></i>
@@ -46,10 +46,20 @@
                         }
                         else
                         {
-                    <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
+                            <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
                         }
                         <br />
-                        <label style="color:red"><b> @item.Price.ToString("0.00") ₺</b></label>
+                        @if (item.DiscountPercent > 0)
+                        {
+                            <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
+                            double total = (((item.Price) * item.DiscountPercent) / 100);
+                            <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
+                        }
+                        else
+                        {
+                            <label style="color:red"><b> @(item.Price.ToString("0.00")) ₺</b></label>
+                        }
+
 
                     </div>
                     <div class="card-footer">
