@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<RamenCo.Models.Product>
-
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -25,14 +24,36 @@
             <div class="col-md-3">
                 <div class="card" style="width:260px">
                     <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
+
                     <div class="card-body">
                         <h5 class="card-title"><b>@item.Title</b></h5>
                         <p class="card-text"> @item.Description</p>
-                        <label><b> @item.Price.ToString("0.00") TL</b></label>
+                        <div class="ratings" >
+                            <div class="stars" >
+                                <i class="fa fa-star" style="color:gold"></i>
+                                <i class="fa fa-star" style="color:gold"></i>
+                                <i class="fa fa-star" style="color:gold"></i>
+                                <i class="fa fa-star" style="color:gold"></i>
+                                <i class="fa fa-star" style="color:gray"></i>
+                                @*<i class="bi bi-star-half" style="color:gold"></i>*@
+                                <i>(16)</i>
+                            </div>
+                            <span class="product-rating">4.3</span><span>/5</span>
+                        </div>
+                        @if (item.IsFreeShipping)
+                        {
+                            <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
+                        }
+                        else
+                        {
+                    <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
+                        }
+                        <br />
+                        <label style="color:red"><b> @item.Price.ToString("0.00") ₺</b></label>
 
                     </div>
                     <div class="card-footer">
-                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-primary" style="margin-left:50px">Ürün Detay</a>
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-warning" style="width:200px">Ürün Detay</a>
                     </div>
 
                 </div>

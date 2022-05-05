@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RamenCo.Data;
+using Microsoft.AspNetCore.Http;
+using RamenCo.Models;
 
 namespace RamenCo.Areas.Identity.Pages.Account
 {
@@ -20,14 +23,17 @@ namespace RamenCo.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _db;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         [BindProperty]
@@ -84,6 +90,9 @@ namespace RamenCo.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = _db.LoginUsers.FirstOrDefault(a=>a.Email==Input.Email);
+                    int count = _db.ShoppingCarts.Where(a => a.LoginUserID == user.Id).Count();
+                    HttpContext.Session.SetInt32(AddRole.SassionShoppingCart,count);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

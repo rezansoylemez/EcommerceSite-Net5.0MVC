@@ -28,6 +28,14 @@ namespace RamenCo.Areas.Customer.Controllers
         public IActionResult Index()
         {
             var products = _db.Products.Where(a => a.IsHome).ToList();
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //Sepete urun ekleyen kullanıcılar
+            if (claim!=null)
+            {
+                var count = _db.ShoppingCarts.Where(a => a.LoginUserID == claim.Value).ToList().Count();
+                HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, count);
+            }
             return View(products);
         }
         //Urun detayi tıklandıgında diğer sayfaya ıd göndermek
