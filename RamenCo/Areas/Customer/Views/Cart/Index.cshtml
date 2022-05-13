@@ -1,5 +1,4 @@
 ﻿@model RamenCo.Models.ShoppingCartViewModel
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -32,7 +31,7 @@
                                     Fiyat
                                 </th>
                                 <th>
-                                    Toplam Tutar
+                                    Detaylar
                                 </th>
                             </tr>
                         </thead>
@@ -70,39 +69,53 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @item.Product.Price.ToString("0.00") ₺
-                                    </td>
-                                    <td>
-                                        @((item.Count*item.Product.Price).ToString("0.00")) ₺
-                                    </td>
-                                </tr>
-                            }
-                            <tr>
-                                <td colspan="5" style="text-align:right">
-                                    <strong>TOPLAM TUTAR:</strong>
-                                </td>
-                                <td style="background-color:forestgreen">
-                                    <span style="font-size:large;color:white">@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</span>
-                                </td>
-                            </tr>
-                            @*<tr>
-                                <td colspan="5" style="text-align:right">
-                                    <strong>Kargo Ücreti:</strong>
-                                </td>
-                                <td style="background-color:forestgreen">
-                                    <span style="font-size:large;color:white">@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</span>
-                                    <span>
-                                        @if (Model.)
+                                        @if (item.Product.DiscountPercent > 0)
                                         {
-                                            <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
+                                            <del style="color:grey;font-size:small"> @(item.Product.Price.ToString("0.00")) </del>
+                                            double total = (((item.Product.Price) * item.Product.DiscountPercent) / 100);
+                                            <label style="color:red"><b> @((item.Product.Price - total).ToString("0.00")) ₺</b></label>
                                         }
                                         else
                                         {
-                                            <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
+                                            <label style="color:red"><b> @(item.Product.Price.ToString("0.00")) ₺</b></label>
                                         }
-                                    </span>
-                                </td>
-                            </tr>*@
+                                    </td>
+                                    <td>
+                                        <div class="card-body">
+                                            <span style="font-size:large;color:black">Ürün Fiyatı: @item.Product.Price.ToString("0.00") ₺</span><br />
+                                            <span style="font-size:large;color:black">İndirim Miktarı %@item.Product.DiscountPercent.ToString()</span><br />
+                                            <span style="font-size:large;color:black">Kargo Fiyatı: @item.Product.ProductShipPrice.ToString("0.00") ₺</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        <tr>
+                            <td colspan="5" style="text-align:right">
+                                <strong><b>TOPLAM TUTAR:</b></strong>
+                            </td>
+                            <td>
+                                <span style="font-size:large;color:black;margin-left:45px"><b>@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</b></span>
+                                <a href="#"></a>
+                            </td>
+                        </tr>
+                            @*<tr>
+                                    <td colspan="5" style="text-align:right">
+                                        <strong>Kargo Ücreti:</strong>
+                                    </td>
+                                    <td style="background-color:forestgreen">
+                                        <span style="font-size:large;color:white">@Model.OrderHeader.OrderTotal.ToString("0.00") ₺</span>
+                                        <span>
+                                            @if (Model.)
+                                            {
+                                                <label class="btn btn-success btn-sm"><i class="bi bi-bag-check"></i> Ücretsiz</label>
+                                            }
+                                            else
+                                            {
+                                                <label class="btn btn-danger btn-sm"><i class="bi bi-bag-x"></i> Ücretli</label>
+                                            }
+                                        </span>
+                                    </td>
+                                </tr>*@
                         </tbody>
                     </table>
                     <div class="row">

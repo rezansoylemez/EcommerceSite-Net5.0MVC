@@ -23,7 +23,18 @@
         {
             <div class="col-md-3" >
                 <div class="card" style="width:260px">
-                    <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
+                    @if (item.IsFreeShipping)
+                    {
+                        <div style="position:relative">
+                            <img class=" z-index:1  " src="~/images/image/Free_Shipping_RTL_2020.png" style="height: 55px; width: 55px; position:absolute" />
+                            <img src="@item.Image" class="card-img-top  z-index:2 " alt="..." style="height:200px">
+                        </div>
+                    }
+                    else
+                    {
+                        <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
+                    }
+
 
                     <div class="card-body">
                         <h5 class="card-title"><b>@item.Title</b></h5>
@@ -40,7 +51,7 @@
                             </div>
                             <span class="product-rating">4.3</span><span>/5</span>
                         </div>
-                        @if (item.IsFreeShipping)
+                        @if (item.IsImmediateDelivery)
                         {
                             <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
                         }
@@ -63,7 +74,18 @@
 
                     </div>
                     <div class="card-footer">
-                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-warning" style="width:200px">Ürün Detay</a>
+                        @if (item.IsStock)
+                        {
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-warning" style="width:200px">Ürün Detay</a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-warning " style="width:200px;color:black" disabled>
+                                Ürün Tükendi
+                            </button>
+
+                        }
+
                     </div>
 
                 </div>

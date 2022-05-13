@@ -93,7 +93,7 @@
                                 <dd class="col-sm-9">
                                     @if (Model.Product.DiscountPercent > 0)
                                     {
-                                        <del style="color:grey;"> @(Model.Product.Price.ToString("0.00")) </del>
+                                        <del style="color:grey;font-size:small"> @(Model.Product.Price.ToString("0.00")) </del>
                                         double total = (((Model.Product.Price) * Model.Product.DiscountPercent) / 100);
                                         <label style="color:red"><b> @((Model.Product.Price- total).ToString("0.00")) ₺</b></label>
                                     }

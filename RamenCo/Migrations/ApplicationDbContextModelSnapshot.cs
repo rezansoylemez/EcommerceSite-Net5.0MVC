@@ -237,6 +237,30 @@ namespace RamenCo.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("RamenCo.Models.Discount", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("DiscountCount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartingDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Discount");
+                });
+
             modelBuilder.Entity("RamenCo.Models.OrderDetails", b =>
                 {
                     b.Property<int>("ID")
@@ -333,6 +357,9 @@ namespace RamenCo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DiscountID")
+                        .HasColumnType("int");
+
                     b.Property<double>("DiscountPercent")
                         .HasColumnType("float");
 
@@ -364,6 +391,8 @@ namespace RamenCo.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("DiscountID");
 
                     b.ToTable("Products");
                 });
@@ -507,7 +536,15 @@ namespace RamenCo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RamenCo.Models.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("RamenCo.Models.ShoppingCart", b =>

@@ -27,6 +27,42 @@ namespace RamenCo.Areas.Customer.Controllers
             _userManager = userManager;
             
         }
+        public IActionResult Summary(ShoppingCartViewModel shoppingCart)
+        {
+            var claimID = (ClaimsIdentity)User.Identity;
+            var claim = claimID.FindFirst(ClaimTypes.NameIdentifier);
+            ShoppingCartViewModel.ListCart = _db.ShoppingCarts.Where(i => i.LoginUserID == claim.Value).Include(i => i.Product);
+            ShoppingCartViewModel.OrderHeader.OrderStatus = AddRole.UserWaiting;
+            ShoppingCartViewModel.OrderHeader.LoginUserID = claim.Value;
+            ShoppingCartViewModel.OrderHeader.OrderTime = DateTime.Now;
+
+            _db.Add(ShoppingCartViewModel.OrderHeader);
+            _db.SaveChanges();
+            foreach (var item in ShoppingCartViewModel.ListCart)
+            {
+                item.Price = item.Product.Price;
+                OrderDetails orderDetails = new OrderDetails()
+                {
+                    ProductID = item.ProductID,
+                    OrderID = ShoppingCartViewModel.OrderHeader.ID,
+                    Price = item.Price,
+                    Count = item.Count
+                };
+                ShoppingCartViewModel.OrderHeader.OrderTotal += item.Count * item.Product.Price;
+                shoppingCart.OrderHeader.OrderTotal += item.Count * item.Product.Price;
+                _db.OrderDetails.Add(orderDetails);
+            }
+            // var payment = PaymentProcess(shoppingCart);
+            _db.ShoppingCarts.RemoveRange(ShoppingCartViewModel.ListCart);
+            _db.SaveChanges();
+            HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, 0);
+            return RedirectToAction("SiparisTamam");
+        }
+
+        public IActionResult OrderResult()
+        {
+            return View();
+        }
 
         public IActionResult Index(int id)
         {
@@ -120,5 +156,26 @@ namespace RamenCo.Areas.Customer.Controllers
             //Artma işlemi yapıldıktan sonra aynı sayfa kalsın.
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult Summary()
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartViewModel = new ShoppingCartViewModel()
+            {
+                OrderHeader = new OrderHeader(),
+                ListCart = _db.ShoppingCarts.Where(a => a.LoginUserID == claim.Value).Include(i => i.Product)
+            };
+            foreach (var item in ShoppingCartViewModel.ListCart)
+            {
+                item.Price = item.Product.Price;
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
+
+            }
+            return View(ShoppingCartViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        
     }
 }

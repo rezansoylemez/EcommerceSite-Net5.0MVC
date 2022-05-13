@@ -25,6 +25,5 @@ namespace RamenCo.Models
         public int CategoryID { get; set; }
         [ForeignKey("CategoryID")]
         public Category Category { get; set; }
-
     }
 }

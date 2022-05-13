@@ -12,5 +12,9 @@ namespace RamenCo.Models
         public const string RoleAdmin = "Admin";
         public const string RoleUser = "User";
         public const string SassionShoppingCart = "Shopping Cart Session";
+
+        public const string UserAllowed = "Onaylandı";
+        public const string UserWaiting = "Bekeleme";
+        public const string ProductCargo = "Kargoya Verildi";
     }
 }
