@@ -27,6 +27,26 @@ namespace RamenCo.Areas.Customer.Controllers
             _userManager = userManager;
             
         }
+        public IActionResult Summary()
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartViewModel = new ShoppingCartViewModel()
+            {
+                OrderHeader = new OrderHeader(),
+                ListCart = _db.ShoppingCarts.Where(a => a.LoginUserID == claim.Value).Include(i => i.Product)
+            };
+            foreach (var item in ShoppingCartViewModel.ListCart)
+            {
+                item.Price = item.Product.Price;
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
+
+            }
+            return View(ShoppingCartViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Summary(ShoppingCartViewModel shoppingCart)
         {
             var claimID = (ClaimsIdentity)User.Identity;
@@ -56,7 +76,7 @@ namespace RamenCo.Areas.Customer.Controllers
             _db.ShoppingCarts.RemoveRange(ShoppingCartViewModel.ListCart);
             _db.SaveChanges();
             HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, 0);
-            return RedirectToAction("SiparisTamam");
+            return RedirectToAction("OrderResult");
         }
 
         public IActionResult OrderResult()
@@ -156,26 +176,7 @@ namespace RamenCo.Areas.Customer.Controllers
             //Artma işlemi yapıldıktan sonra aynı sayfa kalsın.
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Summary()
-        {
-            var claimIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            ShoppingCartViewModel = new ShoppingCartViewModel()
-            {
-                OrderHeader = new OrderHeader(),
-                ListCart = _db.ShoppingCarts.Where(a => a.LoginUserID == claim.Value).Include(i => i.Product)
-            };
-            foreach (var item in ShoppingCartViewModel.ListCart)
-            {
-                item.Price = item.Product.Price;
-                ShoppingCartViewModel.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
-
-            }
-            return View(ShoppingCartViewModel);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         
     }
 }

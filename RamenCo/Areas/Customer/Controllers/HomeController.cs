@@ -94,6 +94,12 @@ namespace RamenCo.Areas.Customer.Controllers
           
             return View(shoppingCart);
         }
+        public IActionResult CategoryDetails(int? id)
+        {
+            var product = _db.Products.Where(i => i.CategoryID == id).ToList();
+            ViewBag.KategoriId = id;
+            return View(product);
+        }
 
         public IActionResult Privacy()
         {
