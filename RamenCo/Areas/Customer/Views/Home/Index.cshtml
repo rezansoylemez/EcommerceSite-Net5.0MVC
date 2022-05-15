@@ -13,11 +13,10 @@
                 <div class="card" style="width:260px">
                     @if (item.IsFreeShipping)
                     {
-                        <div style="position:relative">
-                            <img class=" z-index:1  " src="~/images/image/GörselHazırlanıyor.png" style="height: 55px; width: 55px; position:absolute" />
-                            @*<img src="~/images/image/Free_Shipping_RTL_2020.png" />*@
-                            <img src="@item.Image" class="card-img-top  z-index:2 " alt="..." style="height:200px">
-                        </div>
+                    <div style="position:relative">
+                        <img class=" z-index:1  " src="~/images/image/Free_Shipping_RTL_2020.png" style="height: 55px; width: 55px; position:absolute" />
+                        <img src="@item.Image" class="card-img-top  z-index:2 " alt="..." style="height:200px">
+                    </div>
                     }
                     else
                     {

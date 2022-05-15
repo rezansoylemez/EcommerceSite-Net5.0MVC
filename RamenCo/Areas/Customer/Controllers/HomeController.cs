@@ -94,6 +94,15 @@ namespace RamenCo.Areas.Customer.Controllers
           
             return View(shoppingCart);
         }
+        public IActionResult Search(string search)
+        {
+            if (!String.IsNullOrEmpty(search))
+            {
+                var aranan = _db.Products.Where(i => i.Title.Contains(search) || i.Description.Contains(search));
+                return View(aranan);
+            }
+            return View();
+        }
         public IActionResult CategoryDetails(int? id)
         {
             var product = _db.Products.Where(i => i.CategoryID == id).ToList();
