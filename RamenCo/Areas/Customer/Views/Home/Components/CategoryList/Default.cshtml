@@ -10,12 +10,12 @@
 
             @foreach (var item in Model)
             {
-                <a asp-action="CategoryDetails" class="list-group-item list-group-item-action  @(ViewBag.KategoriId?.ToString()==item.ID.ToString()?"active":"")" asp-route-id="@item.ID">@item.Name 
-            
+                <a asp-action="CategoryDetails" class="list-group-item list-group-item-action  @(ViewBag.KategoriId?.ToString()==item.ID.ToString()?"active":"")" asp-route-id="@item.ID">
+                    @item.Name
             </a>
 
-                
-            }
+
+        }
         </div>
     </div>
 </div>
