@@ -10,92 +10,104 @@
     <div class="row">
         @await Component.InvokeAsync("CategoryList")
 
-        @if (Model.Count() > 0)
-        {
-            @foreach (var item in Model)
+        @{
+            if (Model.Count() > 0)
             {
+                @foreach (var item in Model)
+                {
 
-                <div class="col-md-3">
-                    <div class="card" style="width:260px">
-                        @if (item.IsFreeShipping)
-                        {
-                            <div style="position:relative">
-                                <img class=" z-index:1  " src="~/images/image/GörselHazırlanıyor.png" style="height: 55px; width: 55px; position:absolute" />
-                                @*<img src="~/images/image/Free_Shipping_RTL_2020.png" />*@
-                                <img src="@item.Image" class="card-img-top  z-index:2 " alt="..." style="height:200px">
-                            </div>
-                        }
-                        else
-                        {
-                            <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
-                        }
-
-
-                        <div class="card-body">
-                            <h5 class="card-title"><b>@item.Title</b></h5>
-                            <p class="card-text"> @item.Description</p>
-                            <div class="ratings">
-                                <div class="stars">
-                                    <i class="fa fa-star" style="color:gold"></i>
-                                    <i class="fa fa-star" style="color:gold"></i>
-                                    <i class="fa fa-star" style="color:gold"></i>
-                                    <i class="fa fa-star" style="color:gold"></i>
-                                    <i class="fa fa-star" style="color:gray"></i>
-                                    @*<i class="bi bi-star-half" style="color:gold"></i>*@
-                                    <i>(16)</i>
+                    <div class="col-md-3">
+                        <div class="card" style="width:260px">
+                            @if (item.IsFreeShipping)
+                            {
+                                <div style="position:relative">
+                                    <img class=" z-index:1  " src="~/images/image/Free_Shipping_RTL_2020.png" style="height: 55px; width: 55px; position:absolute" />
+                                    @*<img src="~/images/image/Free_Shipping_RTL_2020.png" />*@
+                                    <img src="@item.Image" class="card-img-top  z-index:2 " alt="..." style="height:200px">
                                 </div>
-                                <span class="product-rating">4.3</span><span>/5</span>
+                            }
+                            else
+                            {
+                                <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
+                            }
+
+
+                            <div class="card-body">
+                                <h5 class="card-title"><b>@item.Title</b></h5>
+                                <p class="card-text"> @item.Description</p>
+                                <div class="ratings">
+                                    <div class="stars">
+                                        <i class="fa fa-star" style="color:gold"></i>
+                                        <i class="fa fa-star" style="color:gold"></i>
+                                        <i class="fa fa-star" style="color:gold"></i>
+                                        <i class="fa fa-star" style="color:gold"></i>
+                                        <i class="fa fa-star" style="color:gray"></i>
+                                        @*<i class="bi bi-star-half" style="color:gold"></i>*@
+                                        <i>(16)</i>
+                                    </div>
+                                    <span class="product-rating">4.3</span><span>/5</span>
+                                </div>
+                                @if (item.IsImmediateDelivery)
+                                {
+                                    <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
+                                }
+                                else
+                                {
+                                    <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
+                                }
+                                <br />
+                                @if (item.DiscountPercent > 0)
+                                {
+                                    <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
+                                    double total = (((item.Price) * item.DiscountPercent) / 100);
+                                    <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
+                                }
+                                else
+                                {
+                                    <label style="color:red"><b> @(item.Price.ToString("0.00")) ₺</b></label>
+                                }
+
+
                             </div>
-                            @if (item.IsImmediateDelivery)
-                            {
-                                <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
-                            }
-                            else
-                            {
-                                <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
-                            }
-                            <br />
-                            @if (item.DiscountPercent > 0)
-                            {
-                                <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
-                                double total = (((item.Price) * item.DiscountPercent) / 100);
-                                <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
-                            }
-                            else
-                            {
-                                <label style="color:red"><b> @(item.Price.ToString("0.00")) ₺</b></label>
-                            }
+                            <div class="card-footer">
+                                @if (item.IsStock)
+                                {
+                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-warning" style="width:200px">Ürün Detay</a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-warning " style="width:200px;color:black" disabled>
+                                        Ürün Tükendi
+                                    </button>
 
+                                }
 
-                        </div>
-                        <div class="card-footer">
-                            @if (item.IsStock)
-                            {
-                                <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-warning" style="width:200px">Ürün Detay</a>
-                            }
-                            else
-                            {
-                                <button class="btn btn-outline-warning " style="width:200px;color:black" disabled>
-                                    Ürün Tükendi
-                                </button>
-
-                            }
+                            </div>
 
                         </div>
 
                     </div>
 
+                }
+            }
+            else if (Model.Count() == 0)
+            {
+                <div class="alert alert-warning text-center">
+                    Lütfen Aramak İstediğiniz Kelimeyi Giriniz.
                 </div>
-
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    Bu Kategoriye ait ürün bulunamadı
+                </div>
             }
 
         }
-        else
-        {
-            <div class="alert alert-warning text-center">
-                Bu Kategoriye ait ürün bulunamadı
-            </div>
-        }
+
+
+
+
 
     </div>
 </div>

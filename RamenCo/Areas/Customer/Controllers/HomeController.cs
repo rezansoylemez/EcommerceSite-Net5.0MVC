@@ -101,7 +101,10 @@ namespace RamenCo.Areas.Customer.Controllers
                 var aranan = _db.Products.Where(i => i.Title.Contains(search) || i.Description.Contains(search));
                 return View(aranan);
             }
-            return View();
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         public IActionResult CategoryDetails(int? id)
         {

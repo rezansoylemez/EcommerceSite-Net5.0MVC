@@ -180,11 +180,11 @@ namespace RamenCo.Areas.Admin.Controllers
         {
             var product = await _context.Products.FindAsync(id);
             //Silinen ürünlerin product klasöründen silmesi için
-            var imagePath = Path.Combine(_he.WebRootPath, product.Image.TrimStart('\\'));
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
+            //var imagePath = Path.Combine(_he.WebRootPath, product.Image.TrimStart('\\'));
+            //if (System.IO.File.Exists(imagePath))
+            //{
+            //    System.IO.File.Delete(imagePath);
+            //}
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
