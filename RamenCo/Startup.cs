@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,9 +34,16 @@ namespace RamenCo
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            //Toastr
+            services.AddMvc().AddNToastNotifyToastr(new NToastNotify.ToastrOptions()
+            {
+                CloseButton = true,
+
+            });
 
             services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+           
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();

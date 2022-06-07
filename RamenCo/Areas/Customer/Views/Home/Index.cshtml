@@ -24,43 +24,45 @@
                     }
 
 
-                    <div class="card-body">
-                        <h5 class="card-title"><b>@item.Title</b></h5>
-                        <p class="card-text"> @item.Description</p>
-                        <div class="ratings">
-                            <div class="stars">
-                                <i class="fa fa-star" style="color:gold"></i>
-                                <i class="fa fa-star" style="color:gold"></i>
-                                <i class="fa fa-star" style="color:gold"></i>
-                                <i class="fa fa-star" style="color:gold"></i>
-                                <i class="fa fa-star" style="color:gray"></i>
-                                @*<i class="bi bi-star-half" style="color:gold"></i>*@
-                                <i>(16)</i>
-                            </div>
-                            <span class="product-rating">4.3</span><span>/5</span>
+                <div class="card-body">
+                    <h5 class="card-title"><b>@item.Title</b></h5>
+                    <p class="card-text"> @item.Description</p>
+                    <div class="ratings">
+                        <div class="stars">
+                            <i class="fa fa-star" style="color:gold"></i>
+                            <i class="fa fa-star" style="color:gold"></i>
+                            <i class="fa fa-star" style="color:gold"></i>
+                            <i class="fa fa-star" style="color:gold"></i>
+                            <i class="fa fa-star" style="color:gray"></i>
+                            @*<i class="bi bi-star-half" style="color:gold"></i>*@
+                            <i>(16)</i>
                         </div>
-                        @if (item.IsImmediateDelivery)
-                        {
-                            <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
-                        }
-                        else
-                        {
-                            <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
-                        }
-                        <br />
-                        @if (item.DiscountPercent > 0)
-                        {
-                            <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
-                            double total = (((item.Price) * item.DiscountPercent) / 100);
-                            <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
-                        }
-                        else
-                        {
-                            <label style="color:red"><b> @(item.Price.ToString("0.00")) ₺</b></label>
-                        }
-
-
+                        <span class="product-rating">4.3</span><span>/5</span>
                     </div>
+                    @if (item.IsImmediateDelivery)
+                    {
+                        <label class="btn-success btn-sm"><i class="bi bi-truck"></i> Hemen Kargoda</label>
+                    }
+                    else
+                    {
+                        <label class="btn-secondary btn-sm"><i class="bi bi-truck"></i> 48 Saatte Kargoda</label>
+                    }
+                    <br />
+                    @if (item.DiscountPercent > 0)
+                    {
+                        <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
+                        double total = (((item.Price) * item.DiscountPercent) / 100);
+                        <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
+                        <label style="color:darkorange;font-size:small">%@item.DiscountPercent</label>
+                    }
+                    else
+                    {
+                        <label style="color:red"><b> @(item.Price.ToString("0.00")) ₺</b></label>
+
+                    }
+
+
+                </div>
                     <div class="card-footer">
                         @if (item.IsStock)
                         {

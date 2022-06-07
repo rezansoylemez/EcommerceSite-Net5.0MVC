@@ -10,8 +10,8 @@ using RamenCo.Data;
 namespace RamenCo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220502235021_AddUserLogin")]
-    partial class AddUserLogin
+    [Migration("20220519230353_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -170,12 +170,10 @@ namespace RamenCo.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -212,12 +210,10 @@ namespace RamenCo.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -243,6 +239,88 @@ namespace RamenCo.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("RamenCo.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("RamenCo.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LoginUserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LoginUserID");
+
+                    b.ToTable("OrderHeaders");
+                });
+
             modelBuilder.Entity("RamenCo.Models.Product", b =>
                 {
                     b.Property<int>("ID")
@@ -257,16 +335,28 @@ namespace RamenCo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("DiscountPercent")
+                        .HasColumnType("float");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsFreeShipping")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsHome")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsImmediateDelivery")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsStock")
                         .HasColumnType("bit");
 
                     b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ProductShipPrice")
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
@@ -278,6 +368,31 @@ namespace RamenCo.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("RamenCo.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginUserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LoginUserID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("RamenCo.Models.LoginUser", b =>
@@ -358,6 +473,34 @@ namespace RamenCo.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RamenCo.Models.OrderDetails", b =>
+                {
+                    b.HasOne("RamenCo.Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RamenCo.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderHeader");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("RamenCo.Models.OrderHeader", b =>
+                {
+                    b.HasOne("RamenCo.Models.LoginUser", "LoginUser")
+                        .WithMany()
+                        .HasForeignKey("LoginUserID");
+
+                    b.Navigation("LoginUser");
+                });
+
             modelBuilder.Entity("RamenCo.Models.Product", b =>
                 {
                     b.HasOne("RamenCo.Models.Category", "Category")
@@ -367,6 +510,23 @@ namespace RamenCo.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("RamenCo.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("RamenCo.Models.LoginUser", "LoginUser")
+                        .WithMany()
+                        .HasForeignKey("LoginUserID");
+
+                    b.HasOne("RamenCo.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LoginUser");
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

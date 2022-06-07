@@ -72,7 +72,6 @@ namespace RamenCo.Areas.Customer.Controllers
                 shoppingCart.OrderHeader.OrderTotal += item.Count * item.Product.Price;
                 _db.OrderDetails.Add(orderDetails);
             }
-            // var payment = PaymentProcess(shoppingCart);
             _db.ShoppingCarts.RemoveRange(ShoppingCartViewModel.ListCart);
             _db.SaveChanges();
             HttpContext.Session.SetInt32(AddRole.SassionShoppingCart, 0);

@@ -7,7 +7,7 @@ namespace RamenCo.Models
 {
     public static class AddRole
     {
-        //Google ve Facebook girişi için
+        //Google girişi için
         public const string RoleGoogle = "Google";
         public const string RoleAdmin = "Admin";
         public const string RoleUser = "User";

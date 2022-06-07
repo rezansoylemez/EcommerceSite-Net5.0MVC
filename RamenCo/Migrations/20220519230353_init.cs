@@ -26,6 +26,13 @@ namespace RamenCo.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Strert = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -44,6 +51,19 @@ namespace RamenCo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,8 +112,8 @@ namespace RamenCo.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -137,8 +157,8 @@ namespace RamenCo.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -149,6 +169,119 @@ namespace RamenCo.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderHeaders",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LoginUserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderTotal = table.Column<double>(type: "float", nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderHeaders", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_OrderHeaders_AspNetUsers_LoginUserID",
+                        column: x => x.LoginUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductShipPrice = table.Column<double>(type: "float", nullable: false),
+                    DiscountPercent = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsHome = table.Column<bool>(type: "bit", nullable: false),
+                    IsStock = table.Column<bool>(type: "bit", nullable: false),
+                    IsFreeShipping = table.Column<bool>(type: "bit", nullable: false),
+                    IsImmediateDelivery = table.Column<bool>(type: "bit", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Categories",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_OrderHeaders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "OrderHeaders",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LoginUserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_AspNetUsers_LoginUserID",
+                        column: x => x.LoginUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -190,6 +323,36 @@ namespace RamenCo.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderID",
+                table: "OrderDetails",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_ProductID",
+                table: "OrderDetails",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderHeaders_LoginUserID",
+                table: "OrderHeaders",
+                column: "LoginUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryID",
+                table: "Products",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_LoginUserID",
+                table: "ShoppingCarts",
+                column: "LoginUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_ProductID",
+                table: "ShoppingCarts",
+                column: "ProductID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -210,10 +373,25 @@ namespace RamenCo.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "OrderHeaders");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }
