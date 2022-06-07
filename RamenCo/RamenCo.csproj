@@ -26,4 +26,9 @@
     <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RamenCo.BLL\RamenCo.BLL.csproj" />
+    <ProjectReference Include="..\RamenCo.Data\RamenCo.Data.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -53,7 +53,7 @@
                         <del style="color:grey;"> @(item.Price.ToString("0.00")) </del>
                         double total = (((item.Price) * item.DiscountPercent) / 100);
                         <label style="color:red"><b> @((item.Price- total).ToString("0.00")) ₺</b></label>
-                        <label style="color:darkorange;font-size:small">%@item.DiscountPercent</label>
+                        <label style="color:darkslategrey;font-size:small">%@item.DiscountPercent</label>
                     }
                     else
                     {
